@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,8 @@ export class RegisterComponent implements OnInit {
 
   position = ['Cashier', 'Admin'];
 
-  constructor() { }
+  // DI
+  constructor(private location: Location) { }
 
   ngOnInit() {
   }
@@ -22,6 +24,10 @@ export class RegisterComponent implements OnInit {
   checkConfirmPassword(form: NgForm){
     return form.value.password !== 
     form.value.comfirm_password && form.value.comfirm_password !== ''
+  }
+
+  cancel(){
+    this.location.back()
   }
 
 }
