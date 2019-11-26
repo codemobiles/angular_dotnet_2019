@@ -21,10 +21,10 @@ export class StockHomeComponent implements OnInit {
   feedData() {
     this.networkService.getAllProduct().subscribe(
       data => {
-        alert(JSON.stringify(data))
+        // alert(JSON.stringify(data))
       },
       error => {
-        alert(JSON.stringify(error))
+        // alert(JSON.stringify(error))
       }
     );
   }

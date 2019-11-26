@@ -1,4 +1,4 @@
-<div *ngIf="true; then stock; else login">ignore display</div>
+<div *ngIf="authService.isLogin(); then stock; else login">ignore display</div>
 
 <ng-template #login>
     <router-outlet></router-outlet>
