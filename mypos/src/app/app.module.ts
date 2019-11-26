@@ -12,6 +12,9 @@ import { StockEditComponent } from './components/stock/stock-edit/stock-edit.com
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { MenuComponent } from './components/shared/menu/menu.component'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { NetworkService } from './services/network.service';
+import { JwtInterceptor } from './services/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,13 @@ import { MenuComponent } from './components/shared/menu/menu.component'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
