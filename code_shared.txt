@@ -1,27 +1,12 @@
- "Jwt": {
-    "Key": "CodemobilesASPNetCore555",
-    "Issuer": "CodeMobiles Ltd",
-    "Subject": "chaiyasit.t@gmail.com",
-    "Audience": "http://codemobiles.com",
-    "ExpireDay": "1"
-  },
-
-
-
-
-
-
-    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+  byte[] salt = new byte[128 / 8];
+            using (var rng = RandomNumberGenerator.Create())
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = Configuration["Jwt:Audience"],
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero, // disable delay when token is expire
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
-            });
+                rng.GetBytes(salt);
+            }
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA512,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+            return $"{Convert.ToBase64String(salt)}.{hashed}";

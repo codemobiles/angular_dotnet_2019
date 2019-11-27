@@ -104,6 +104,20 @@ namespace mypos_api
             });
 
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = Configuration["Jwt:Issuer"],
+                            ValidateAudience = true,
+                            ValidAudience = Configuration["Jwt:Audience"],
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.Zero, // disable delay when token is expire
+                    ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        };
+                    });
 
             // Declare IProductRepo Service for DI
             services.AddScoped<IProductRepo, ProductRepo>();
@@ -123,8 +137,6 @@ namespace mypos_api
 
             app.UseRouting();
 
-
-  
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             // http://localhost:<port>/swagger/<version-doc>/swagger.json
             // mark: <version-doc> ref. c.SwaggerDoc("v1", ....)
@@ -143,7 +155,7 @@ namespace mypos_api
                 //c.RoutePrefix = string.Empty;
             });
 
-
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

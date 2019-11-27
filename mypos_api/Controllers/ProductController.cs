@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using mypos_api.Database;
@@ -10,6 +11,7 @@ namespace mypos_api.Controllers
 
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ProductController : ControllerBase
     {
 
