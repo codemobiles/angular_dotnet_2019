@@ -1,7 +1,12 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using mypos_api.Database;
 using mypos_api.Models;
 
@@ -11,9 +16,12 @@ namespace mypos_api.repo
     {
         private readonly DatabaseContext _context;
 
-        public AuthRepo(DatabaseContext context)
+        public IConfiguration _configuration { get; }
+
+        public AuthRepo(DatabaseContext context, IConfiguration configuration)
         {
             this._context = context;
+            _configuration = configuration;
         }
 
         public (Users, string) Login(Users user)
@@ -35,7 +43,28 @@ namespace mypos_api.repo
 
         private string BuildToken(Users user)
         {
-            
+            // key is case-sensitive
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+                new Claim("id", user.Id.ToString()),
+                new Claim("username", user.Username),
+                new Claim("position", user.Position),
+                new Claim(ClaimTypes.Role, user.Position)
+            };
+
+            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:ExpireDay"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private bool CheckPassword(string hash, string password)
