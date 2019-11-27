@@ -45,7 +45,7 @@ namespace mypos_api.Controllers
             }
         }
 
-        [HttpPost("[action_name]")]
+        [HttpPost("[action]")]
         public IActionResult register(Users user)
         {
             try
