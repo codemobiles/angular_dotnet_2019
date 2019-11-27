@@ -1,0 +1,18 @@
+
+step 1: 
+dotnet tool install --global dotnet-ef --version 3.0.0
+
+
+step 2:
+
+dotnet ef dbcontext scaffold "Server=localhost,1112;user id=sa;
+      password=Tel1234!; Database=CMPOS;"
+      Microsoft.EntityFrameworkCore.SqlServer -o Models -t products -t users 
+      -c DatabaseContext --context-dir Database
+
+
+
+dotnet ef dbcontext scaffold 'Server=localhost,1112;user id=sa;
+      password=Tel1234!; Database=CMPOS;'
+      Microsoft.EntityFrameworkCore.SqlServer -o Models -t products -t users 
+      -c DatabaseContext --context-dir Database
