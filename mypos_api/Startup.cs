@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using mypos_api.Database;
+using mypos_api.repo;
 
 namespace mypos_api
 {
@@ -27,20 +30,27 @@ namespace mypos_api
         {
             services.AddControllers();
 
-            //
+            // Declare Database Service for DI
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionSQLServer")));
+
+            // Declare IProductRepo Service for DI
+            services.AddScoped<IProductRepo, ProductRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            // middle ware
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection(); 
 
-            app.UseRouting();
+            app.UseRouting(); 
 
             app.UseAuthorization();
 
