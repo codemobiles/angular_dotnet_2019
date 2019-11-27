@@ -1,1 +1,7 @@
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJzb25faWQiOiIxMjQ5NDk0OTQ5NDk0IiwiY19jYXJkIjoxNDI0MjE0MTI0MjQsInBhc3N3b3JkIjoiMjQxMjQiLCJpYXQiOjE1MTYyMzkwMjJ9.FwJ08UK6S8Oy8bMfnrqNdeIdSq4EYtZ7se3-FWaJ2Ro
+ "Jwt": {
+    "Key": "CodemobilesASPNetCore555",
+    "Issuer": "CodeMobiles Ltd",
+    "Subject": "chaiyasit.t@gmail.com",
+    "Audience": "http://codemobiles.com",
+    "ExpireDay": "1"
+  },
