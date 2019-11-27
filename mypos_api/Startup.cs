@@ -145,8 +145,6 @@ namespace mypos_api
 
 
 
-
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
