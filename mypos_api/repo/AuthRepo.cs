@@ -38,7 +38,7 @@ namespace mypos_api.repo
                 return (result, String.Empty);
             }
 
-            return (result, BuildToken(user));
+            return (result, BuildToken(result));
         }
 
         private string BuildToken(Users user)
@@ -49,7 +49,7 @@ namespace mypos_api.repo
                 new Claim("id", user.Id.ToString()),
                 new Claim("username", user.Username),
                 new Claim("position", user.Position),
-                new Claim(ClaimTypes.Role, user.Position)
+                new Claim(ClaimTypes.Role, user.Position),
             };
 
             var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:ExpireDay"]));
