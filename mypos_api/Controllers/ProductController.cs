@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using mypos_api.Database;
+using mypos_api.Models;
 using mypos_api.repo;
 
 namespace mypos_api.Controllers
@@ -25,7 +26,7 @@ namespace mypos_api.Controllers
         public IProductRepo _productRepo { get; }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAllProduct()
         {
             try
             {
@@ -38,46 +39,82 @@ namespace mypos_api.Controllers
             }
         }
 
-        // [HttpPost]
-        // public IActionResult Post([FromBody] modelType model)
-        // {
-        //     try
-        //     {
-        //         return Created("", null);
-        //     }
-        //     catch (Exception)
-        //     {
-        //         _logger.LogError("Failed to execute POST");
-        //         return BadRequest();
-        //     }
-        // }
+        [HttpGet("{id}")] // localhost../product/{id}
+        public IActionResult GetProduct(int id)
+        {
+            try
+            {
 
-        // [HttpPut]
-        // public IActionResult Put([FromBody] modelType model)
-        // {
-        //     try
-        //     {
-        //         return Ok();
-        //     }
-        //     catch (Exception)
-        //     {
-        //         _logger.LogError("Failed to execute PUT");
-        //         return BadRequest();
-        //     }
-        // }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
 
-        // [HttpDelete]
-        // public IActionResult Delete(inputType id)
-        // {
-        //     try
-        //     {
-        //         return Ok();
-        //     }
-        //     catch (Exception)
-        //     {
-        //         _logger.LogError("Failed to execute DELETE");
-        //         return BadRequest();
-        //     }
-        // }
+
+        [HttpPost]
+        public IActionResult NewProduct([FromForm] Products data)
+        {
+            try
+            {
+
+                return Created("", null);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult EditProduct([FromForm] Products data, int id)
+        {
+            try
+            {
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            try
+            {
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
+
+
+
+
+
+
+        [HttpGet("search")] // localhost.../product/search?name=xxxx&order=asc
+        public IActionResult Search([FromQuery] string name, [FromQuery] string order)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

@@ -26,6 +26,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 namespace mypos_api
 {
@@ -103,7 +104,6 @@ namespace mypos_api
                 c.CustomSchemaIds(x => x.FullName);
             });
 
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
@@ -122,6 +122,8 @@ namespace mypos_api
             // Declare IProductRepo Service for DI
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IAuthRepo, AuthRepo>();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

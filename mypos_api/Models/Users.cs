@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace mypos_api.Models
 {
@@ -12,3 +13,4 @@ namespace mypos_api.Models
         public DateTime Created { get; set; }
     }
 }
+
