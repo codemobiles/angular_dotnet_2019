@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,41 +45,56 @@ namespace mypos_api.Controllers
         {
             try
             {
+                var result = _productRepository.GetProduct(id);
 
-                return Ok();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(new { result = result, message = "request successfully" });
+                }
             }
-            catch (Exception)
+            catch (Exception error)
             {
-                return BadRequest();
+                _logger.LogError($"Log GetProduct: {error}");
+                return StatusCode(500, new { result = "", message = error });
             }
         }
 
 
         [HttpPost]
-        public IActionResult NewProduct([FromForm] Products data)
+        public async Task<IActionResult> NewProduct([FromForm] Products data)
         {
-            try
+             try
             {
-
-                return Created("", null);
+                var result = await _productRepository.AddProduct(data);
+                return Ok(new { result = result, message = "create product successfully" });
             }
-            catch (Exception)
+            catch (Exception error)
             {
-                return BadRequest();
+                _logger.LogError($"Log CreateProduct: {error}");
+                return StatusCode(500, new { result = "", message = error });
             }
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditProduct([FromForm] Products data, int id)
+        public async Task<IActionResult> EditProduct([FromForm] Products data, int id)
         {
-            try
+           try
             {
-
-                return Ok();
+                var result = await _productRepository.EditProduct(data, id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(new { result = result, message = "update product successfully" });
             }
-            catch (Exception)
+            catch (Exception error)
             {
-                return BadRequest();
+                _logger.LogError($"Log UpdateProduct: {error}");
+                return StatusCode(500, new { result = "", message = error });
             }
         }
 
@@ -87,12 +103,17 @@ namespace mypos_api.Controllers
         {
             try
             {
-
-                return Ok();
+                var result = _productRepository.DeleteProduct(id);
+                if (result == false)
+                {
+                    return NotFound();
+                }
+                return Ok(new { result = "", message = "delete product sucessfully" });
             }
-            catch (Exception)
+            catch (Exception error)
             {
-                return BadRequest();
+                _logger.LogError($"Log DeleteProduct: {error}");
+                return StatusCode(500, new { result = "", message = error });
             }
         }
 

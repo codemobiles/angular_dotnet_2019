@@ -26,19 +26,51 @@ namespace mypos_api.repo
 
         public DatabaseContext _context { get; }
 
-        public Task<Products> AddProduct(Products product)
+        public async Task<Products> AddProduct(Products product)
         {
-            throw new System.NotImplementedException();
+            var image = await UploadProductImages();
+            if (!String.IsNullOrEmpty(image))
+            {
+                product.Image = image;
+            }
+
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            return product;
         }
 
         public bool DeleteProduct(int id)
         {
-            throw new System.NotImplementedException();
+            var result = GetProduct(id);
+            if (result == null)
+            {
+                return false;
+            }
+            _context.Products.Remove(result);
+            _context.SaveChanges();
+            return true;
         }
 
-        public Task<Products> EditProduct(Products product, int id)
+        public async Task<Products> EditProduct(Products product, int id)
         {
-            throw new System.NotImplementedException();
+            var result = GetProduct(id);
+            if (result != null)
+            {
+                var image = await UploadProductImages();
+                if (!String.IsNullOrEmpty(image))
+                {
+                    result.Image = image;
+                }
+
+                result.Name = product.Name;
+                result.Price = product.Price;
+                result.Stock = product.Stock;
+
+                _context.Products.Update(result);
+                _context.SaveChanges();
+            }
+            return result;
         }
 
         public IEnumerable<Products> GetProduct()
@@ -48,14 +80,12 @@ namespace mypos_api.repo
 
         public Products GetProduct(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Products.SingleOrDefault(p => p.ProductId == id);
         }
 
         // Note: recommended used async Task
         public async Task<String> UploadProductImages()
         {
-
-
             var files = _httpContextAccessor.HttpContext.Request.Form.Files;
 
             if (files.Count > 0)
@@ -71,7 +101,6 @@ namespace mypos_api.repo
                     Directory.CreateDirectory(filePath);
                 }
 
-                // S3 
                 foreach (var formFile in files)
                 {
                     fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(formFile.FileName); // unique name
