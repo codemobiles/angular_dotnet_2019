@@ -16,7 +16,6 @@ namespace mypos_api.Controllers
     [Authorize]
     public class ProductController : ControllerBase
     {
-
         ILogger<ProductController> _logger;
         public ProductController(ILogger<ProductController> logger, IProductRepo productRepo)
         {
@@ -45,7 +44,7 @@ namespace mypos_api.Controllers
         {
             try
             {
-                var result = _productRepository.GetProduct(id);
+                var result = _productRepo.GetProduct(id);
 
                 if (result == null)
                 {
@@ -63,13 +62,12 @@ namespace mypos_api.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> NewProduct([FromForm] Products data)
         {
-             try
+            try
             {
-                var result = await _productRepository.AddProduct(data);
+                var result = await _productRepo.AddProduct(data);
                 return Ok(new { result = result, message = "create product successfully" });
             }
             catch (Exception error)
@@ -82,9 +80,9 @@ namespace mypos_api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> EditProduct([FromForm] Products data, int id)
         {
-           try
+            try
             {
-                var result = await _productRepository.EditProduct(data, id);
+                var result = await _productRepo.EditProduct(data, id);
                 if (result == null)
                 {
                     return NotFound();
@@ -103,7 +101,7 @@ namespace mypos_api.Controllers
         {
             try
             {
-                var result = _productRepository.DeleteProduct(id);
+                var result = _productRepo.DeleteProduct(id);
                 if (result == false)
                 {
                     return NotFound();
@@ -119,11 +117,19 @@ namespace mypos_api.Controllers
 
 
 
-
-
-
-
-
+        [HttpGet("images/{name}")]
+        public IActionResult GetProductImage(String name)
+        {
+            try
+            {
+                return File($"~/images/{name}", "image/jpg");
+               // return File($"~/images/{name}", "image/jpg", "xxxxx.jpg");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpGet("search")] // localhost.../product/search?name=xxxx&order=asc
         public IActionResult Search([FromQuery] string name, [FromQuery] string order)
