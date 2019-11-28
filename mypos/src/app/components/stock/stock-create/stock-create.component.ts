@@ -16,7 +16,11 @@ export class StockCreateComponent implements OnInit {
   }
 
   submit(){
-    // todo
+    alert(JSON.stringify(this.mProduct))
+  }
+
+  cancel(){
+
   }
 
 }

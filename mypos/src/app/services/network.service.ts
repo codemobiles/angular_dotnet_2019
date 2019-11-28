@@ -38,4 +38,7 @@ export class NetworkService {
   deleteProduct(id: number): Observable<ProductResponse> {
     return this.httpClient.delete<ProductResponse>(`${this.productURL}/${id}`)
   }
+
+
+  
 }
