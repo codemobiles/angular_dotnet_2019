@@ -30,8 +30,12 @@ export class NetworkService {
   login(data): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(this.loginURL, data)
   }
-  
+
   getAllProduct(): Observable<ProductResponse> {
     return this.httpClient.get<ProductResponse>(this.productURL)
+  }
+
+  deleteProduct(id: number): Observable<ProductResponse> {
+    return this.httpClient.delete<ProductResponse>(`${this.productURL}/${id}`)
   }
 }

@@ -21,15 +21,11 @@ export class StockHomeComponent implements OnInit {
   feedData() {
     this.networkService.getAllProduct().subscribe(
       data => {
-
         console.log(data.result);
-
         this.mDataArray = data.result.map(product => {
           product.image = this.networkService.productImageURL + "/" + product.image;
           return product
         });
-
-    
       },
       error => {
         alert(JSON.stringify(error))
@@ -37,8 +33,12 @@ export class StockHomeComponent implements OnInit {
     );
   }
 
-  getOutOfStock() {
-    return 100
+  getOutOfStock(): number {
+    return this.mDataArray.filter(product => {
+      if(product.stock <= 0){
+        return product
+      }
+    }).length
   }
 
   editProduct(id: number) {
@@ -55,11 +55,21 @@ export class StockHomeComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.value) {
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+
+        this.networkService.deleteProduct(id).subscribe(
+          data => {
+            Swal.fire(
+              'Deleted!',
+              data.message,
+              'success'
+            )
+
+            this.feedData()
+          },
+          error => {
+            alert(JSON.stringify(error))
+          }
+        );
       }
     })
   }

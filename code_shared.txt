@@ -1,27 +1,20 @@
-  services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigins", builder =>
-                {
-                    builder.WithOrigins("http://example.com", "http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                    //.WithMethods("GET", "POST", "HEAD");
-                });
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                });
 
-                /*
-                    The browser can skip the preflight request
-                    if the following conditions are true:
-                    - The request method is GET, HEAD, or POST.
-                    - The Content-Type header
-                       - application/x-www-form-urlencoded
-                       - multipart/form-data
-                       - text/plain
-                */
-            });
+  searchTextChanged = new Subject<string>();
+
+   this.searchTextChanged.pipe(
+      debounceTime(1000)
+    ).subscribe(term => this.onSearch(term));
+
+
+     onSearch(keyword: string) {
+    if (keyword === '') {
+      this.feedData();
+    } else {
+      this.mProductArray = this.mSearchProductArray.filter((product) => {
+        return product.name.toLowerCase().indexOf(keyword.toLowerCase()) > -1
+      });
+    }
+  }
