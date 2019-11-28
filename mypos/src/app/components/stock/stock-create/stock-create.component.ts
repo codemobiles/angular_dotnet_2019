@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-stock-create',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockCreateComponent implements OnInit {
 
+  mProduct = new Product();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  submit(){
+    // todo
   }
 
 }

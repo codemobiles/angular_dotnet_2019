@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2'
 import { Product } from 'src/app/models/product.model';
 import { NetworkService } from 'src/app/services/network.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-stock-home',
@@ -12,12 +15,31 @@ import { NetworkService } from 'src/app/services/network.service';
 export class StockHomeComponent implements OnInit {
 
   mDataArray: Product[]
+  mSearchProductArray: Product[]
+
+  searchTextChanged = new Subject<string>();
 
   constructor(private networkService: NetworkService) { }
 
   ngOnInit() {
     this.feedData();
+
+    this.searchTextChanged.pipe(
+      debounceTime(1000)
+    ).subscribe(term => this.onSearch(term));
   }
+
+
+  onSearch(keyword: string) {
+    if (keyword === '') {
+      this.feedData();
+    } else {
+      this.mDataArray = this.mSearchProductArray.filter((product) => {
+        return product.name.toLowerCase().indexOf(keyword.toLowerCase()) > -1
+      });
+    }
+  }
+
   feedData() {
     this.networkService.getAllProduct().subscribe(
       data => {
@@ -26,6 +48,8 @@ export class StockHomeComponent implements OnInit {
           product.image = this.networkService.productImageURL + "/" + product.image;
           return product
         });
+
+        this.mSearchProductArray = this.mDataArray;
       },
       error => {
         alert(JSON.stringify(error))
@@ -35,7 +59,7 @@ export class StockHomeComponent implements OnInit {
 
   getOutOfStock(): number {
     return this.mDataArray.filter(product => {
-      if(product.stock <= 0){
+      if (product.stock <= 0) {
         return product
       }
     }).length

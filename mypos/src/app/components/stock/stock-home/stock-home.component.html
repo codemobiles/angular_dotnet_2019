@@ -37,7 +37,7 @@
             <div class="card-body">
                 <div class="row card-body-header">
                     <div class="col-5">
-                        <input class="form-control input-lg" placeholder="Enter search keyword">
+                        <input (keyup)="searchTextChanged.next($event.target.value)" class="form-control input-lg" placeholder="Enter search keyword">
                     </div>
                     <div class="col-7">
                         <a class="btn btn-success float-right btn-add">เพิ่ม</a>
