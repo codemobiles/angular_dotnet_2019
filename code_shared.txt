@@ -1,40 +1,11 @@
-  // Note: recommended used async Task
-        public async Task<String> UploadProductImages()
-        {
-            var files = _httpContextAccessor.HttpContext.Request.Form.Files;
-
-            if (files.Count > 0)
-            {
-                const string folder = "/images/";
-                string filePath = _webHostEnvironment.WebRootPath + folder;
-
-                string fileName = "";
-                //var fileNameArray = new List<String>(); // multiple images case
-
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
-                }
-
-                foreach (var formFile in files)
-                {
-                    fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(formFile.FileName); // unique name
-                    string fullPath = filePath + fileName;
-
-                    if (formFile.Length > 0)
-                    {
-                        using (var stream = new FileStream(fullPath, FileMode.Create))
-                        {
-                            await formFile.CopyToAsync(stream);
-                        }
-                    }
-
-                    // fileNameArray.Add(fileName); // multiple images case
-                }
-
-                return fileName;
-                //return fileNameArray; // multiple images case
-            }
-            return String.Empty;
-            //return null;      // multiple images case
-        }
+  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private hostURL = environment.baseAPIURL;  
+  private apiURL = `${this.hostURL}`;
+  // -----------------------------------------------------
+  private loginURL = `${this.apiURL}/auth/login`;
+  private registerURL = `${this.apiURL}/auth/register`;
+  private productURL = `${this.apiURL}/product`;
+  public productImageURL = `${this.apiURL}/product/images`;
+  private outOfStockURL = `${this.productURL}/count/out_of_stock`;
+  private transactionURL = `${this.apiURL}/transaction`;
+  
