@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProductResponse } from '../models/product.model';
+import { ProductResponse, Product } from '../models/product.model';
 import { RegisterResponse, LoginResponse } from '../models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -40,5 +40,21 @@ export class NetworkService {
   }
 
 
-  
+  newProduct(data: Product): Observable<ProductResponse> {
+    return this.httpClient.post<ProductResponse>(this.productURL, this.makeFormData(data))
+  }
+
+  editProduct(data: Product, id: number): Observable<ProductResponse> {
+    return this.httpClient.put<ProductResponse>(`${this.productURL}/${id}`, this.makeFormData(data))
+  }
+
+  makeFormData(product: Product): FormData {
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('price', `${product.price}`);
+    formData.append('stock', `${product.stock}`);
+    formData.append('upload_file', product.image);
+    return formData;
+  }
+
 }
