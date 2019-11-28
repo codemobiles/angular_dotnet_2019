@@ -108,7 +108,33 @@ namespace mypos_api
 
 
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigins", builder =>
+                {
+                    builder.WithOrigins("http://example.com", "http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                    //.WithMethods("GET", "POST", "HEAD");
+                });
 
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+
+                /*
+                    The browser can skip the preflight request
+                    if the following conditions are true:
+                    - The request method is GET, HEAD, or POST.
+                    - The Content-Type header
+                       - application/x-www-form-urlencoded
+                       - multipart/form-data
+                       - text/plain
+                */
+            });
 
 
 
@@ -135,6 +161,8 @@ namespace mypos_api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             // http://localhost:<port>/swagger/<version-doc>/swagger.json

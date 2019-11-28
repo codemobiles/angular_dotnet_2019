@@ -30,12 +30,12 @@ namespace mypos_api.Controllers
         {
             try
             {
-                return Ok(_productRepo.GetProduct());
+                return Ok(new { result = _productRepo.GetProduct(), message = "request successfully" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError("Failed to execute GET");
-                return BadRequest();
+                _logger.LogError("Failed" + ex);
+                return StatusCode(500, new { result = ex, message = ex });
             }
         }
 
@@ -116,14 +116,14 @@ namespace mypos_api.Controllers
         }
 
 
-
+        [AllowAnonymous]
         [HttpGet("images/{name}")]
         public IActionResult GetProductImage(String name)
         {
             try
             {
                 return File($"~/images/{name}", "image/jpg");
-               // return File($"~/images/{name}", "image/jpg", "xxxxx.jpg");
+                // return File($"~/images/{name}", "image/jpg", "xxxxx.jpg");
             }
             catch (Exception)
             {
