@@ -124,6 +124,9 @@ namespace mypos_api
             services.AddScoped<IAuthRepo, AuthRepo>();
 
             services.AddAutoMapper(typeof(Startup));
+
+            // access hosting
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
