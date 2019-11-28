@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class NetworkService {
 
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  private hostURL = environment.baseAPIURL;  
+  private hostURL = environment.baseAPIURL;
   private apiURL = `${this.hostURL}`;
   // -----------------------------------------------------
   private loginURL = `${this.apiURL}/auth/login`;
@@ -20,18 +20,18 @@ export class NetworkService {
   public productImageURL = `${this.apiURL}/product/images`;
   private outOfStockURL = `${this.productURL}/count/out_of_stock`;
   private transactionURL = `${this.apiURL}/transaction`;
-  
+
   constructor(private httpClient: HttpClient) { }
 
   register(data): Observable<RegisterResponse> {
-    return this.httpClient.post<RegisterResponse>("xxxxxxapi/auth/register", data)
+    return this.httpClient.post<RegisterResponse>(this.registerURL, data)
   }
 
   login(data): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>("xxxxx/api/auth/login", data)
+    return this.httpClient.post<LoginResponse>(this.loginURL, data)
   }
-
+  
   getAllProduct(): Observable<ProductResponse> {
-    return this.httpClient.get<ProductResponse>("http://192.168.0.102:5000/api/Product")
+    return this.httpClient.get<ProductResponse>(this.productURL)
   }
 }
