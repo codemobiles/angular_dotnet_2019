@@ -1,96 +1,187 @@
-mProductArray = new Array<Product>();
-  mOrderArray = new Array<Product>();
-  mTotalPrice = 0;
-  mIsPaymentShow = false;
+.content-wrapper {
+  overflow: scroll;
+  overflow-y: hidden;
+}
 
-  constructor(private networkService: NetworkService) { }
+.thumbnail {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+}
 
-  ngOnInit() {
-    this.feedData();
-  }
+.thumbnail img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 
-  feedData() {
-    this.networkService.getProducts().subscribe(
-      data => {
-        // console.log(JSON.stringify(data.result));
+.thumbnail img.portrait {
+  width: 100%;
+  height: auto;
+  margin-top: 15px;
+  width: 100%;
+  opacity: 0.85
+}
 
-        this.mProductArray = data.result.map(
-          item => {
-            var image = item.image;
-            if (image != null && image != '') {
-              item.image = this.networkService.productImageURL + "/" + item.image
-            }
-            return item
-          }
-        )
-      },
-      error => {
-        console.log(JSON.stringify(error));
-      }
-    );
-  }
+.payment_btn {
+  width: 100%;
+  font-size: 40px;
+  height: 100px;
+  color: white;
+}
 
-  // Products item Begin
-  onClickAddOrder(item: Product, isDecrease: Boolean) {
-    const foundIndex = this.mOrderArray.indexOf(item);
+.payment_ready {
+  background: rgb(59, 161, 0);
+}
 
-    if (foundIndex === -1) {
-      item.qty = 1;
-      this.mOrderArray.unshift(item);
-    } else {
-      if(isDecrease){
-        if(item.qty > 1){
-          item.qty--;
-        }
-      }else{
-        item.qty++;
-      }
-    }
-    this.countSumPrice();
-  }
+.payment_blank {
+  background: #acb1b1
+}
 
-  countSumPrice() {
-    this.mTotalPrice = 0;
-    for (const item of this.mOrderArray) {
-      this.mTotalPrice += item.price * item.qty;
-    }
-  }
+.payment_cancel {
+  background: rgb(172, 168, 168);
+}
 
-  isSelectedItem(item: Product) {
-    return this.mOrderArray.indexOf(item) === -1 ? false : true;
-  }
-  // Products item End
+.selected_item {
+  background: #c0d5e4;
+}
 
-  // Orders Begin
-  onClickRemoveOrder(item: Product) {
-    this.mProductArray.map(data => {
-      if (item.productId === data.productId) {
-        data.qty = null;
-      }
-    });
+.nbutton_delete {
+  width: 15px;
+  cursor: pointer;
+}
 
-    this.mOrderArray.splice(this.mOrderArray.indexOf(item), 1);
-    this.countSumPrice();
+.nprice_tag,
+.nprice_tag_selected {
+  position: absolute;
+  font-size: 10px;
+  top: 10px;
+  right: 10px;
+  vertical-align: top;
+  color: #000000b3;
+  line-height: 13px;
+  background: #e6e6ef;
+  border-radius: 2px;
+}
 
-    if (this.mTotalPrice === 0 && this.mIsPaymentShow === true) {
-      this.mIsPaymentShow = !this.mIsPaymentShow;
-    }
-  }
+.nprice_tag_selected {
+  color: white;
+  background: #ff8534;
+}
 
-  onClickPayment() {
-    if (this.mTotalPrice > 0) {
-      this.mIsPaymentShow = !this.mIsPaymentShow;
-    } else {
-      alert('At least single order is requied!');
-    }
-  }
+ul.card {
+  list-style-type: none;
+  padding-left: 0px;
+  padding-right: 0px;
+  overflow-x: hidden;
+}
 
-  onPaymentCompleted() {
-    this.mProductArray = [];
-    this.mOrderArray = [];
-    this.mTotalPrice = 0;
-    this.mIsPaymentShow = false;
+li.normal_row,
+li.selected_row {
+  border-bottom: 1px solid #eeeeee;
+  padding: 8px 12px;
+}
 
-    this.feedData();
-  }
-  // Orders End
+li.normal_row {
+  background: white;
+}
+
+li.selected_row {
+  background: #f1f0f0dd;
+}
+
+.qty_default {
+  color: black;
+}
+
+.qty_more_than_one {
+  color: red;
+}
+
+.image_product_list_item>img {
+  border: 1px solid rgb(194, 194, 194);
+  height: 100px;
+  width: 100px;
+}
+
+.card_no_order {
+  height: 390px;
+  max-height: 390px;
+  line-height: 400px;
+  text-align: center;
+  color: #999999;
+  font-size: 20px;
+}
+
+.card_orders {
+  height: 390px;
+  max-height: 390px;
+  overflow-x: hidden;
+  cursor: pointer;
+}
+
+.product-name {
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  width: 270px;
+  line-height: 22px;
+  max-height: 90px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.order-detail-block {
+  margin: 0 12px;
+}
+
+.card-product:hover {
+  box-shadow: 2px 5px 8px 0 rgba(255, 145, 0, 0.9);
+  cursor: pointer;
+}
+
+.order_input-price {
+  border: solid 1px #ccc;
+  border-radius: 4px;
+}
+
+.order_input-qty {
+  width: 120px;
+}
+
+.order_input-price {
+  width: 110px;
+}
+
+.product_price {
+  font-size: 16px;
+  padding: 4px 8px;
+}
+
+.total_price {
+  color: #6610f2;
+}
+
+.form-control:disabled {
+  background-color: white;
+}
+
+
+.input-group-append > .input-group-text{
+background-color: #28a745;
+}
+
+
+.input-group-prepend > .input-group-text{
+  background-color: #dc3545;
+}
+
+.input-group-text > i{
+  color: white;
+}
