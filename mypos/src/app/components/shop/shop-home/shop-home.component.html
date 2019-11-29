@@ -12,8 +12,8 @@
                   </ng-template>
                   <ng-template #order>
                     <ul class="card card_orders">
-                      <li *ngFor="let item of mOrderArray;"
-                        [ngClass]="false ? 'selected_row' : 'normal_row'">
+                      <li *ngFor="let item of mOrderArray; let index = index"
+                        [ngClass]="index % 2 == 0 ? 'selected_row' : 'normal_row'">
                         <div class="d-flex flex-row justify-content-between">
                           <div class="d-flex">
                             <div class="image_product_list_item">
