@@ -25,7 +25,7 @@ export class ShopPaymentComponent {
     } else {
       return 0;
     }
-  }  
+  }
 
   public get isPaidEnough() {
     var given = Number(this.givenNumber);
@@ -48,7 +48,8 @@ export class ShopPaymentComponent {
   }
 
   onClickSubmit() {
-      this.submitPayment.emit();
+    this.submitPayment.emit();
+    this.sendName.emit("tanakorn")
   }
 
 
