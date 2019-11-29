@@ -11,7 +11,7 @@ import { NetworkService } from 'src/app/services/network.service';
 export class StockCreateComponent implements OnInit {
 
   mProduct = new Product();
-  mImageSrc: String | ArrayBuffer
+  imageSrc: String | ArrayBuffer = null
 
   constructor(private location: Location, private networkService: NetworkService) { }
 
@@ -30,6 +30,18 @@ export class StockCreateComponent implements OnInit {
 
   cancel() {
     this.location.back();
+  }
+
+  onUploadImage(event) {
+    const metaImage = event.target.files[0];
+    if (metaImage) {
+      const reader = new FileReader();
+      reader.readAsDataURL(metaImage);
+      reader.onload = () => {
+        this.imageSrc = reader.result;
+        this.mProduct.image = metaImage;
+      };
+    }
   }
 
 }
