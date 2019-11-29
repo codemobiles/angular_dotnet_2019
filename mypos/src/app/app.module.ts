@@ -17,6 +17,7 @@ import { NetworkService } from './services/network.service';
 import { JwtInterceptor } from './services/jwt.interceptor';
 import { ShopPaymentComponent } from './components/shop/shop-payment/shop-payment.component';
 import { ShopHomeComponent } from './components/shop/shop-home/shop-home.component';
+import { CustomPipe } from './pipes/custom.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ShopHomeComponent } from './components/shop/shop-home/shop-home.compone
     MenuComponent,
     ShopPaymentComponent,
     ShopHomeComponent,
+    CustomPipe,
   ],
   imports: [
     BrowserModule,
