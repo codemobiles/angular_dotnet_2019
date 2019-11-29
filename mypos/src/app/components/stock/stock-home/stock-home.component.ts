@@ -4,6 +4,7 @@ import { Product } from 'src/app/models/product.model';
 import { NetworkService } from 'src/app/services/network.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class StockHomeComponent implements OnInit {
 
   searchTextChanged = new Subject<string>();
 
-  constructor(private networkService: NetworkService) { }
+  constructor(private networkService: NetworkService, private router: Router ) { }
 
   ngOnInit() {
     this.feedData();
@@ -66,6 +67,7 @@ export class StockHomeComponent implements OnInit {
   }
 
   editProduct(id: number) {
+    this.router.navigate([`stock/edit/${id}`])
   }
 
   deleteProduct(id: number) {

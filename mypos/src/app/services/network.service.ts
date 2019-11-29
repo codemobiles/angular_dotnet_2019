@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProductResponse, Product } from '../models/product.model';
+import { ProductAllResponse, Product, ProductResponse } from '../models/product.model';
 import { RegisterResponse, LoginResponse } from '../models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -31,17 +31,20 @@ export class NetworkService {
     return this.httpClient.post<LoginResponse>(this.loginURL, data)
   }
 
-  getAllProduct(): Observable<ProductResponse> {
-    return this.httpClient.get<ProductResponse>(this.productURL)
+  getAllProduct(): Observable<ProductAllResponse> {
+    return this.httpClient.get<ProductAllResponse>(this.productURL)
   }
 
-  deleteProduct(id: number): Observable<ProductResponse> {
-    return this.httpClient.delete<ProductResponse>(`${this.productURL}/${id}`)
+  getProduct(id: number): Observable<ProductResponse> {
+    return this.httpClient.get<ProductResponse>(`${this.productURL}/${id}`)
   }
 
+  deleteProduct(id: number): Observable<ProductAllResponse> {
+    return this.httpClient.delete<ProductAllResponse>(`${this.productURL}/${id}`)
+  }
 
-  newProduct(data: Product): Observable<ProductResponse> {
-    return this.httpClient.post<ProductResponse>(this.productURL, this.makeFormData(data))
+  newProduct(data: Product): Observable<ProductAllResponse> {
+    return this.httpClient.post<ProductAllResponse>(this.productURL, this.makeFormData(data))
   }
 
   editProduct(data: Product, id: number): Observable<ProductResponse> {

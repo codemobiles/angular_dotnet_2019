@@ -1,5 +1,10 @@
-export interface ProductResponse {
+export interface ProductAllResponse {
     result:  Product[];
+    message: string;
+}
+
+export interface ProductResponse {
+    result:  Product;
     message: string;
 }
 
