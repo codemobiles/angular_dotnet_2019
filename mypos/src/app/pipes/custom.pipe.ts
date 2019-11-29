@@ -4,9 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'custom'
 })
 export class CustomPipe implements PipeTransform {
-   // {{ yai | custom}} => lek
+   // {{ 0.00 | custom}} => ฿x.xx
   transform(value: String, ...args: any[]): any {
-    return 'lek'
+    return '฿' + value.replace(/,/g, '').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
-
 }
