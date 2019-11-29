@@ -1,25 +1,32 @@
-.input_payment,
-.input_given {
-  font-size: 30px;
-  height: 50px;
-  border-radius: 5px;
-}
-
-.btn-given,
-.btn-payment{
-  width: 100%;
-}
-
-.btn-given:nth-child(1),
-.btn-payment:nth-child(1){
-  margin-right: 6px;
-}
-
-.btn-given:nth-child(3),
-.btn-payment:nth-child(3){
-  margin-left: 6px;
-}
-
-.form-control:disabled{
-  background-color: white;
-}
+<div class="card">
+  <section class="card-body">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex flex-column">
+        <label>Change</label>
+        <input value="฿ {{mChange | number : '1.2-2'}}" class="form-control input_payment" disabled />
+      </div>
+      <div class="d-flex flex-column">
+        <label>Paid</label>
+        <input type="text" class="form-control input_given" (ngModelChange)="givenNumber=$event"
+          [ngModel]="givenNumber | custom : '1.2-2'" disabled/>
+        <!-- should not use pipe with two-way binding [(ngModel)]="givenNumber | custom : '1.2-2' -->
+      </div>
+    </div>
+    <div class="d-flex justify-content-around mt-4">
+      <button type="button" class="btn btn-lg btn-outline-primary btn-given" (click)="onClickGiven(1000)">฿1000</button>
+      <button type="button" class="btn btn-lg btn-outline-primary btn-given" (click)="onClickGiven(500)">฿500</button>
+      <button type="button" class="btn btn-lg btn-outline-primary btn-given" (click)="onClickGiven(100)">฿100</button>
+    </div>
+    <div class="d-flex justify-content-around mt-2">
+      <button type="button" class="btn btn-lg btn-outline-primary btn-given" (click)="onClickGiven(50)">฿50</button>
+      <button type="button" class="btn btn-lg btn-outline-primary btn-given" (click)="onClickGiven(20)">฿20</button>
+      <button type="button" class="btn btn-lg btn-outline-primary btn-given" (click)="onClickGiven(10)">฿10</button>
+    </div>
+    <div class="d-flex justify-content-around mt-4">
+      <button type="button" class="btn btn-lg btn-default btn-payment" (click)="onClickReset()">CLEAR</button>
+      <button type="button" class="btn btn-lg bg-gradient-info btn-payment" (click)="onClickExact()">EXACT</button>
+      <button *ngIf="isPaidEnough" type="button" class="btn btn-lg bg-gradient-success btn-payment"
+        (click)="onClickSubmit()">SUBMIT</button>
+    </div>
+  </section>
+</div>
