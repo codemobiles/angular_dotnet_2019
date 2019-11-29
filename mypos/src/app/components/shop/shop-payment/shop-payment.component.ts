@@ -12,18 +12,8 @@ export class ShopPaymentComponent implements OnInit {
   @Output("submit_success") submitPayment = new EventEmitter<void>()
   @Output("send_name") sendName = new EventEmitter<string>()
 
-  constructor() { }
 
-  ngOnInit() {
 
-  }
-
-  onClickSubmit(){
-    this.submitPayment.emit()
-  }
-
-  onClickTest(){
-    this.sendName.emit("tanakorn")
-  }
+  
 
 }
