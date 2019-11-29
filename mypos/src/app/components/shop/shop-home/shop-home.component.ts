@@ -106,4 +106,8 @@ export class ShopHomeComponent implements OnInit {
   }
   // Orders End
 
+  printName(event){
+    alert(event)
+  }
+
 }

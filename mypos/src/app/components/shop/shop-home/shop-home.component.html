@@ -98,7 +98,7 @@
               </ng-template>
               <ng-template #payment>
                 <div class="col-md-7">
-                  <app-shop-payment></app-shop-payment>
+                  <app-shop-payment [total]="mTotalPrice" (submit_success)="onPaymentCompleted()" (send_name)="printName($event)"></app-shop-payment>
                 </div>
               </ng-template>
             </div>
